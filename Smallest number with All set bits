@@ -1,0 +1,4 @@
+class Solution:
+    def smallestNumber(self, n: int) -> int:
+        return next(2**i-1 for i in count() if 2**i-1>=n)
+        
