@@ -1,0 +1,18 @@
+class Solution:
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        prefix = ListNode(0)
+        suffix = ListNode(0)
+        dum1 = prefix
+        dum2 = suffix
+        curr = head
+        while curr:
+            if curr.val < x:
+                dum1.next = curr
+                dum1 = dum1.next
+            else:
+                dum2.next = curr
+                dum2 = dum2.next
+            curr = curr.next
+        dum2.next = None
+        dum1.next = suffix.next
+        return prefix.next
