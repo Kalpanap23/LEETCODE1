@@ -1,0 +1,55 @@
+from collections import defaultdict
+from sortedcontainers import SortedSet
+
+class DSU:
+    def __init__(self, n):
+        self.parent = list(range(n + 1))
+    
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+    
+    def union(self, x, y):
+        self.parent[self.find(x)] = self.find(y)
+
+class Solution:
+    def processQueries(self, c, connections, queries):
+        dsu = DSU(c)
+        
+        # Step 1: Build DSU
+        for u, v in connections:
+            dsu.union(u, v)
+        
+        # Step 2: Map each station to its component root
+        station_to_root = {}
+        component_map = defaultdict(list)
+        for i in range(1, c + 1):
+            root = dsu.find(i)
+            station_to_root[i] = root
+            component_map[root].append(i)
+        
+        # Step 3: Initialize online sets
+        comp_online = {}
+        for comp_id, stations in component_map.items():
+            comp_online[comp_id] = SortedSet(stations)
+        
+        offline = set()
+        result = []
+        
+        for qtype, x in queries:
+            comp_id = station_to_root[x]
+            if qtype == 1:
+                if x not in offline:
+                    result.append(x)
+                else:
+                    if comp_online[comp_id]:
+                        result.append(comp_online[comp_id][0])
+                    else:
+                        result.append(-1)
+            else:  # qtype == 2
+                if x not in offline:
+                    offline.add(x)
+                    comp_online[comp_id].discard(x)
+        
+        return result
