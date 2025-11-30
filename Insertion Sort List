@@ -1,0 +1,16 @@
+class Solution:
+    def insertionSortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # 
+        dummy = ListNode()
+        cur = head 
+        while cur:
+            prev = dummy 
+            # Find where cur should be inserted in the sorted part
+            while prev.next and prev.next.val < cur.val:
+                prev = prev.next 
+            # insert cur between prev and prev.next 
+            nxt = cur.next 
+            cur.next = prev.next 
+            prev.next = cur 
+            cur = nxt 
+        return dummy.next 
