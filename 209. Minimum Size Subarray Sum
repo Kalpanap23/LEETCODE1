@@ -1,0 +1,20 @@
+class Solution:
+    def minSubArrayLen(self, target, nums):
+        left = 0
+        right = 1
+        sum = nums[0]
+        minLen = 1000000
+        while True:
+            if sum < target:
+                right += 1
+                if right > len(nums):
+                    break
+                sum += nums[right - 1]
+            else:
+                if right - left < minLen:
+                    minLen = right - left
+                left += 1
+                sum -= nums[left - 1]
+        if minLen < 1000000:
+            return minLen
+        return 0       
