@@ -1,0 +1,21 @@
+class Solution:
+    def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
+        tml = defaultdict(list)
+        for l,r,h in buildings:
+            tml[l].append(h)
+            tml[r].append(-h)
+        res = []
+        lh = 0
+        stk = SortedList()
+        for i, evts in sorted(tml.items(), key=lambda x: x[0]):
+            for e in evts:
+                if e < 0:
+                    stk.remove(-e)
+                else:
+                    stk.add(e)
+            h = stk[-1] if stk else 0
+            if h != lh:
+                res.append([i, h])
+                lh = h
+        return res
+        
