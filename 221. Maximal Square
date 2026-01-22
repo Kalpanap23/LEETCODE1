@@ -1,0 +1,11 @@
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        #convert to numbers
+        mynums = [int(''.join(row),2) for row in matrix]
+        #operate
+        ans=0
+        while any(mynums):
+            mynums = [a & (a<<1) for a in mynums]
+            mynums= [a & b for a, b in pairwise(mynums)]
+            ans+=1
+        return ans*ans
