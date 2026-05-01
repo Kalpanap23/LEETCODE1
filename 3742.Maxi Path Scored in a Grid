@@ -1,0 +1,9 @@
+class Solution:
+    def maxPathScore(self, g: List[List[int]], k: int) -> int:
+        @cache
+        def f(i,j,m=len(g),n=len(g[0])):
+            if not m>i>=0<=j<n: return Counter()
+            if i==m-1 and j==n-1: return Counter({g[i][j]>0:g[i][j]+1})
+            return Counter({q:v+g[i][j] for kk,v in (f(i,j+1)|f(i+1,j)).items()
+                if (q:=kk+(g[i][j]>0))<=k})
+        return max(f(0,0).values(),default=0)-1
