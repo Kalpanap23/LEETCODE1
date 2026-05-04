@@ -1,0 +1,9 @@
+class Solution:
+    def rotate(self, grid: list[list[int]]) -> None:
+        n = len(grid)
+        for i in range(n):
+            for j in range(i, n):
+                grid[i][j], grid[j][i] = grid[j][i], grid[i][j]
+        for i in range(n):
+            for j in range(n // 2):
+                grid[i][j], grid[i][n-j-1] = grid[i][n-j-1], grid[i][j]
